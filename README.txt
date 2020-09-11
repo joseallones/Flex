@@ -1,4 +1,8 @@
 
+git clone https://github.com/joseallones/Flex.git
+cd Flex
+chmod 755 flex.py
+
 Script Usage:
 usage: flex.py [-h] [-n NUM] [-p POS] [-g GEN] lemma lang
 
