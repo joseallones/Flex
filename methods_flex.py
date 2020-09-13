@@ -1,6 +1,4 @@
 import csv
-import json
-import argparse, sys
 
 
 # Function to convert a csv file to a list of dictionaries.
@@ -8,6 +6,8 @@ def csv_dict_list(variables_file):
     reader = csv.DictReader(open(variables_file, 'rt'))
     dict_list = []
     for line in reader:
+        if(line['pos'].endswith('D')): #Descarta diminutivos
+            continue
         dict_list.append(line)
     return dict_list
 
@@ -35,9 +35,10 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
         list = [element for element in list if element['pos'][3] == num.upper()]
 
     for element in list:
-        element['gen'] = element['pos'][2]
-        element['num'] = element['pos'][3]
-        element['pos'] = element['pos'][0:2]
+        element['gen'] = element['pos'][2]    #NCMP000 --> M
+        element['num'] = element['pos'][3]    #NCMP000 --> P
+        element['pos'] = element['pos'][0:1]  #So a primeira letra (NCMP000 --> N)
+
 
     return list
 
