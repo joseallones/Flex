@@ -7,7 +7,7 @@ from methods_io import gardaListadoNunFicheiro
 
 # Función para leer un paquete csv e crear una lista de diccionarios
 def csv_dict_list(variables_file):
-    reader = csv.DictReader(open(variables_file, 'rt'))
+    reader = csv.DictReader(open(variables_file, 'rt', encoding='utf-8'))
     dict_list = []
     for line in reader:
         if(line['pos'].endswith('D')): #Descarta diminutivos

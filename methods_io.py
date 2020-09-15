@@ -17,7 +17,7 @@ def gardaListadoNunFicheiro(listado, nomeFicheiro):
 
 def obtenInfoPaqueteDoCsv(path_file):
 
-    f = open(path_file)
+    f = open(path_file, encoding='utf-8')
     listaILIsUnicos = []
     listDict = []
 
@@ -32,7 +32,7 @@ def obtenInfoPaqueteDoCsv(path_file):
 
 def obtenTermosDoTXT(path_file):
     try:
-        f = open(path_file)
+        f = open(path_file, encoding='utf-8')
 
         listDict = []
 
