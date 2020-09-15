@@ -1,0 +1,217 @@
+##  EMPAQUETADO 
+##  Núcleo: 
+##  Anotación semántica: 
+##  Estructura argumental: 
+##  Actante: 
+##  lang: gl
+##  action: compartido
+##  query1: ontology=sumo&category=EmotionalState#EmotionalState&subcategories=on
+##  query2: ontology=epinonyms&category=ili-30-00026192-n
+##  query3: 
+##  query4: 
+##  query5: 
+##  http://portlex.usc.gal/develop/combina.php?lang=gl&action=compartido&query1=ontology%3Dsumo%26category%3DEmotionalState%23EmotionalState%26subcategories%3Don&query2=ontology%3Depinonyms%26category%3Dili-30-00026192-n&query3=&query4=&query5=
+
+
+19 07548567-n
+agresividade
+
+26 07551890-n
+alegría
+
+27 07531105-n
+alegría
+
+28 07529245-n
+alegría
+
+29 13987423-n
+alegría
+
+30 07527167-n
+alegría
+
+31 07527352-n
+alegría
+
+38 07535010-n
+angustia
+
+39 07496755-n
+angustia
+
+40 07496463-n
+angustia
+
+41 07494363-n
+angustia
+
+42 07523905-n
+angustia
+
+51 07523905-n
+ansiedade
+
+53 07502669-n
+antipatía
+
+108 07510625-n
+conmoción
+
+110 07519773-n
+consternación
+
+116 07536245-n
+culpa
+
+118 07540602-n
+decepción
+
+125 07503987-n
+desaprobación
+
+127 07510348-n
+desconcerto
+
+131 07541923-n
+desesperación
+
+134 07542249-n
+desesperanza
+
+135 07486229-n
+desexo
+
+136 07488788-n
+desexo
+
+148 07494363-n
+dor
+
+149 07534430-n
+dor
+
+153 07554856-n
+empatía
+
+156 07491981-n
+entusiasmo
+
+161 07541053-n
+esperanza
+
+162 07511733-n
+esperanza
+
+165 07509572-n
+estupor
+
+166 07529096-n
+euforia
+
+167 07528212-n
+euforia
+
+170 07518878-n
+exasperación
+
+179 07526757-n
+felicidade
+
+180 07531105-n
+felicidade
+
+181 13987423-n
+felicidade
+
+198 07520507-n
+histeria
+
+216 07517737-n
+indignación
+
+222 07524918-n
+inseguridade
+
+232 07552729-n
+irritabilidade
+
+235 07529377-n
+ledicia
+
+236 07531105-n
+ledicia
+
+237 07527352-n
+ledicia
+
+238 13987423-n
+ledicia
+
+246 07519253-n
+medo
+
+247 07520612-n
+medo
+
+248 07521674-n
+medo
+
+249 07524529-n
+medo
+
+259 07525760-n
+nerviosismo
+
+269 07502669-n
+noxo
+
+270 07503430-n
+noxo
+
+271 07503430-n
+odio
+
+280 07519253-n
+pavor
+
+285 07509572-n
+perplexidade
+
+292 07523905-n
+preocupación
+
+293 07524529-n
+preocupación
+
+337 07521674-n
+temor
+
+338 07510184-n
+temor
+
+339 07519253-n
+temor
+
+340 07524529-n
+temor
+
+345 07492516-n
+tranquilidade
+
+346 07515790-n
+tranquilidade
+
+349 07532440-n
+tristeza
+
+350 07533978-n
+tristeza
+
+351 07532440-n
+tristura
+
+352 07533978-n
+tristura
+
+

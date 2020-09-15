@@ -1,7 +1,11 @@
 import csv
 
 
-# Function to convert a csv file to a list of dictionaries.
+
+from methods_io import gardaListadoNunFicheiro
+
+
+# Función para leer un paquete csv e crear una lista de diccionarios
 def csv_dict_list(variables_file):
     reader = csv.DictReader(open(variables_file, 'rt'))
     dict_list = []
@@ -11,7 +15,8 @@ def csv_dict_list(variables_file):
         dict_list.append(line)
     return dict_list
 
-# Function to search for inflections based on various criteria
+
+# Función para buscar as flexións para un lema
 def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
 
     dict_list = []
@@ -42,3 +47,41 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
 
     return list
 
+
+# Función para buscar as flexións para un "paquete"
+# infoPaquete é unha lista de diccionarios
+def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
+    listadoResultadosFlexions = []
+    termos_sen_flexions = []
+
+    for dict in infoPaquete:
+
+        lemas = []
+        if (lang == "pt"):
+            lemas = dict["lema_por"]
+        elif (lang == "gl"):
+            lemas = dict["lema_glg"]
+
+        if (not lemas):
+            continue
+
+        for lema in lemas:  # Para cada lema
+
+            resultadoAux = search(lemma=lema, lang=lang)
+            if resultadoAux:
+                for r in resultadoAux:
+                    r['ili'] = dict['ili']
+                listadoResultadosFlexions = listadoResultadosFlexions + resultadoAux
+            else:
+                termos_sen_flexions.append(lema)
+                listadoResultadosFlexions.append({"form": "", "lemma": lema, "pos": "N", "gen": "", "num": "", "ili": dict["ili"]})
+
+    # print("Lista de flexións para o " + lang + ":" )
+    # print(listadoResultadosFlexions)
+
+    print("\n\nTermos do " + lang + " sin flexións:" )
+    print(termos_sen_flexions)
+
+    gardaListadoNunFicheiro(termos_sen_flexions, rutaFicheiroTermosSenFlexions)
+
+    return listadoResultadosFlexions

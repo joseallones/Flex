@@ -1,8 +1,7 @@
 #!/usr/bin/env python
- 
-import csv
+
 import json
-import argparse, sys
+import argparse
 
 from methods_flex import search
 
