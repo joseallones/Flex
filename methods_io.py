@@ -3,14 +3,14 @@ import csv
 
 def gardaDiccionarioNunFicheiro(infoPaquete, nomeFicheiro):
     keys = infoPaquete[0].keys()
-    with open(nomeFicheiro, 'w', newline='') as output_file:
+    with open(nomeFicheiro, 'w', newline='', encoding='utf-8') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(infoPaquete)
 
 
 def gardaListadoNunFicheiro(listado, nomeFicheiro):
-     with open(nomeFicheiro, 'w') as myfile:
+     with open(nomeFicheiro, 'w', encoding='utf-8') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(listado)
 
