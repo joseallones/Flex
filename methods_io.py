@@ -1,16 +1,17 @@
 import csv
+import xlrd
 
 
 def gardaDiccionarioNunFicheiro(infoPaquete, nomeFicheiro):
-    keys = infoPaquete[0].keys()
-    with open(nomeFicheiro, 'w', newline='') as output_file:
-        dict_writer = csv.DictWriter(output_file, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(infoPaquete)
-
+    with open(nomeFicheiro, 'w', newline='', encoding='utf-8') as output_file:
+        if infoPaquete:
+            keys = infoPaquete[0].keys()
+            dict_writer = csv.DictWriter(output_file, keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(infoPaquete)
 
 def gardaListadoNunFicheiro(listado, nomeFicheiro):
-     with open(nomeFicheiro, 'w') as myfile:
+     with open(nomeFicheiro, 'w', encoding='utf-8') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(listado)
 
@@ -22,6 +23,7 @@ def obtenInfoPaqueteDoCsv(path_file):
     listDict = []
 
     for line in f:
+        print (line)
         data_line = line.rstrip().split(',')
         if(data_line[5] not in listaILIsUnicos):
             listaILIsUnicos.append(data_line[5])
@@ -29,6 +31,26 @@ def obtenInfoPaqueteDoCsv(path_file):
             #print(data_line[5] + " " + data_line[1])
     return listDict
 
+def obtenInfoPaqueteDoXlsx(path_file):
+
+    listDict = []
+    listaILIsUnicos = []
+
+    wb = xlrd.open_workbook(path_file)
+    sh = wb.sheet_by_index(0)
+    for i in range(sh.nrows):
+
+        # print(sh.cell(i, 0).value)
+        primeiraCelda = sh.cell(i, 0).value
+        if(primeiraCelda.startswith("##")):
+            continue
+
+        # print(sh.cell(i, 5).value)
+        if ( sh.cell(i, 5).value not in listaILIsUnicos):
+            listDict.append({"ili": sh.cell(i, 5).value, "lema_spa": sh.cell(i, 1).value})
+            listaILIsUnicos.append(sh.cell(i, 5).value)
+
+    return listDict
 
 def obtenTermosDoTXT(path_file):
     try:
