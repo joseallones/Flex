@@ -1,8 +1,46 @@
 import requests
 import json
+from urllib.parse import quote
+
 
 from methods_io import gardaDiccionarioNunFicheiro
 
+
+def obtenTraduccionsMyMemmory(infoPaquete, lang):
+
+    url = 'https://api.mymemory.translated.net/get?langpair=es|' + lang +'&de=joseallones87@gmail.com&q='
+
+    for dict in infoPaquete:
+
+        if lang == "pt":
+            dict["trad_por_mymemmory"] = []
+        elif lang == "gl":
+            dict["trad_glg_mymemmory"] = []
+
+        if lang == "pt" and 'lema_por' in dict.keys() and dict['lema_por']:
+            continue
+
+        if lang == "gl" and 'lema_glg' in dict.keys() and dict['lema_glg']:
+            continue
+
+        print(url+quote(dict['lema_spa']))
+        r = requests.get(url+dict['lema_spa'])
+        r.encoding = 'utf-8'
+        json_data = json.loads(r.text)
+
+        matches = json_data["matches"]
+        listTrad = []
+        for match in matches:
+            if(match['segment'].lower()==dict['lema_spa']):
+                if(match['translation'].lower() not in listTrad):
+                    listTrad.append(match['translation'].lower())
+                    print(match['segment'])
+                    print(match['translation'].lower() + "  " + str(match['quality']) + "  " + str(match['match']) )
+
+        if lang == "pt":
+            dict["trad_por_mymemmory"] = listTrad
+        elif lang == "gl":
+            dict["trad_glg_mymemmory"] = listTrad
 
 #Función para obter os termos asociados aos ILIs. Chama ao servizo de wordnet.pt
 def obtenTermos_AsociadosA_ILIs(infoPaquete):

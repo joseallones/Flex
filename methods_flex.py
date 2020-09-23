@@ -63,10 +63,17 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
             lemas = dict["lema_glg"]
 
         if (not lemas):
+            if (lang == "pt"):
+                lemas = dict["trad_por_mymemmory"]
+            elif (lang == "gl"):
+                lemas = dict["trad_glg_mymemmory"]
+
+        if (not lemas):
             continue
 
         for lema in lemas:  # Para cada lema
 
+            lema = lema.replace("_", " ")
             resultadoAux = search(lemma=lema, lang=lang)
             if resultadoAux:
                 for r in resultadoAux:

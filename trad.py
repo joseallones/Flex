@@ -66,11 +66,16 @@ for rutaFicheiroEntrada in listadoRutas:
     infoPaquete = infoPaqueteDoCSV
     listaILIs = listaILIsCSV
 
+    #Paso 2: Obter traduccions
 
-    #Paso 2: Obter termos asociados ao ILIs (synsets) en galego e portugués
+    #Paso 2.1: Obter termos asociados ao ILIs (synsets) en galego e portugués
     obtenTermos_AsociadosA_ILIs(infoPaquete)
 
-    # Garda a información dos léxicos atopados nun fichero
+    #Paso 2.2: Obter traduccións de API MyMemory
+    obtenTraduccionsMyMemmory(infoPaquete, "pt")
+    obtenTraduccionsMyMemmory(infoPaquete, "gl")
+
+    #Paso 2.3: Garda a información dos léxicos atopados nun fichero
     rutaFicheiroSaidaServizoWeb = rutaFicheiroEntrada.replace(".csv", "_resultados_servizoweb.csv", 1)
     if (rutaFicheiroSaidaServizoWeb == rutaFicheiroEntrada):
         rutaFicheiroSaidaServizoWeb = rutaFicheiroSaidaServizoWeb.replace(".xlsx", "_resultados_servizoweb.xlsx", 1)
