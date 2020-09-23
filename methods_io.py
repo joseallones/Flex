@@ -4,11 +4,13 @@ import xlrd
 
 def gardaDiccionarioNunFicheiro(infoPaquete, nomeFicheiro):
 
-    keys = infoPaquete[0].keys()
+
     with open(nomeFicheiro, 'w', newline='', encoding='utf-8') as output_file:
-        dict_writer = csv.DictWriter(output_file, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(infoPaquete)
+        if infoPaquete:
+            keys = infoPaquete[0].keys()
+            dict_writer = csv.DictWriter(output_file, keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(infoPaquete)
 
 def gardaListadoNunFicheiro(listado, nomeFicheiro):
      with open(nomeFicheiro, 'w', encoding='utf-8') as myfile:
