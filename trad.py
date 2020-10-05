@@ -27,8 +27,11 @@ listadoRutas = []
 
 if(os.path.isdir(ruta)):
     print("Directorio")
-    # if not ruta.endswith("/"):
-    #     ruta = ruta + "/"
+    if not ruta.endswith("/"):
+        ruta = ruta + "/"
+    print(ruta)
+    ruta_salida = ruta + "output/"
+    print(ruta_salida)
 
     for file in os.listdir(ruta):
         if file.startswith("es_") and  (file.endswith(".csv") or  file.endswith(".xlsx")):
@@ -40,6 +43,10 @@ elif(os.path.isfile(ruta)):
     print("File")
     listadoRutas.append(ruta)
     exit(1)
+
+
+if not os.path.exists('output'):
+    os.makedirs('output')
 
 print("\n\n")
 time.sleep(2)
@@ -71,14 +78,18 @@ for rutaFicheiroEntrada in listadoRutas:
     #Paso 2.1: Obter termos asociados ao ILIs (synsets) en galego e portugués
     obtenTermos_AsociadosA_ILIs(infoPaquete)
 
-    #Paso 2.2: Obter traduccións de API MyMemory
+    #Paso 2.2: Obter traduccións de API MyMemory + Apertium
     obtenTraduccionsMyMemmory(infoPaquete, "pt")
     obtenTraduccionsMyMemmory(infoPaquete, "gl")
+    obtenTraduccionsApertium(infoPaquete, "gl")
+    obtenTraduccionsApertium(infoPaquete, "pt")
 
     #Paso 2.3: Garda a información dos léxicos atopados nun fichero
     rutaFicheiroSaidaServizoWeb = rutaFicheiroEntrada.replace(".csv", "_resultados_servizoweb.csv", 1)
     if (rutaFicheiroSaidaServizoWeb == rutaFicheiroEntrada):
         rutaFicheiroSaidaServizoWeb = rutaFicheiroSaidaServizoWeb.replace(".xlsx", "_resultados_servizoweb.xlsx", 1)
+    rutaFicheiroSaidaServizoWeb = rutaFicheiroSaidaServizoWeb.replace(ruta, ruta_salida)
+    print(rutaFicheiroSaidaServizoWeb)
     gardaDiccionarioNunFicheiro(infoPaquete, rutaFicheiroSaidaServizoWeb)
 
 
@@ -86,11 +97,13 @@ for rutaFicheiroEntrada in listadoRutas:
     rutaFicheiroTermosSenFlexions = rutaFicheiroEntrada.replace(".csv", "_termos_sen_flexions_pt.csv", 1)
     if(rutaFicheiroTermosSenFlexions == rutaFicheiroEntrada):
         rutaFicheiroTermosSenFlexions = rutaFicheiroEntrada.replace(".xlsx", "_termos_sen_flexions_pt.xlsx", 1)
+    rutaFicheiroTermosSenFlexions = rutaFicheiroTermosSenFlexions.replace(ruta, ruta_salida)
     resultadosFlexionsPt = obterFlexionsPaquete(infoPaquete, "pt", rutaFicheiroTermosSenFlexions)
 
     rutaFicheiroTermosSenFlexions = rutaFicheiroEntrada.replace(".csv", "_termos_sen_flexions_gl.csv", 1)
     if (rutaFicheiroTermosSenFlexions == rutaFicheiroEntrada):
         rutaFicheiroTermosSenFlexions = rutaFicheiroEntrada.replace(".xlsx", "_termos_sen_flexions_gl.xlsx", 1)
+    rutaFicheiroTermosSenFlexions = rutaFicheiroTermosSenFlexions.replace(ruta, ruta_salida)
     resultadosFlexionsGl = obterFlexionsPaquete(infoPaquete, "gl", rutaFicheiroTermosSenFlexions)
 
 
@@ -104,7 +117,8 @@ for rutaFicheiroEntrada in listadoRutas:
         rutaFicheiroSaidaGl = rutaFicheiroEntrada.replace(".csv", "_gl.csv", 1)
         rutaFicheiroSaidaGl = rutaFicheiroSaidaGl.replace(".xlsx", "_gl.xlsx", 1)
 
-
+    rutaFicheiroSaidaPt = rutaFicheiroSaidaPt.replace(ruta, ruta_salida)
+    rutaFicheiroSaidaGl = rutaFicheiroSaidaGl.replace(ruta, ruta_salida)
 
     #Paso 4: Creación dos ficheiros CSVs con flexión, lema,indicadores de PoS e ILI
     gardaDiccionarioNunFicheiro(resultadosFlexionsPt, rutaFicheiroSaidaPt)

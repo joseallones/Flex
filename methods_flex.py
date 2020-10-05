@@ -74,6 +74,8 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
 
     listSubs = []
     listAdxs = []
+    listSubsNormalizados = []
+    listAdxsNormalizados = []
 
     if(not pos or (pos and pos.upper().startswith("N")) ):
         listSubs = [element for element in dict_list_subs if element['lemma'] == lemma.lower()]
@@ -91,9 +93,11 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
             listSubs = [element for element in listSubs if element['pos'][3] == num.upper()]
 
         for element in listSubs:
-            element['gen'] = element['pos'][2]    #NCMP000 --> M
-            element['num'] = element['pos'][3]    #NCMP000 --> P
-            element['pos'] = element['pos'][0:1]  #So a primeira letra (NCMP000 --> N)
+            elementNormalizado = element.copy()
+            elementNormalizado['gen'] = element['pos'][2]    #NCMP000 --> M
+            elementNormalizado['num'] = element['pos'][3]    #NCMP000 --> P
+            elementNormalizado['pos'] = element['pos'][0:1]  #So a primeira letra (NCMP000 --> N)
+            listSubsNormalizados.append(elementNormalizado)
 
     if (not pos or (pos and pos.upper().startswith("A")) ):
         listAdxs = [element for element in dict_list_adx if element['lemma'] == lemma.lower()]
@@ -102,17 +106,19 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
             listAdxs = [element for element in listAdxs if element['pos'][0:1] == pos.upper()]
 
         if gen:
-            listAdxs = [element for element in listAdxs if element['pos'][2] == gen.upper()]
+            listAdxs = [element for element in listAdxs if element['pos'][3] == gen.upper()]
 
         if num:
-            listAdxs = [element for element in listAdxs if element['pos'][3] == num.upper()]
+            listAdxs = [element for element in listAdxs if element['pos'][4] == num.upper()]
 
         for element in listAdxs:
-            element['gen'] = element['pos'][3]  # AQ0FS --> F
-            element['num'] = element['pos'][4]  # AQ0FS --> S
-            element['pos'] = element['pos'][0:1]  # So a primeira letra (AQ0FS --> A)
+            elementNormalizado = element.copy()
+            elementNormalizado['gen'] = element['pos'][3]  # AQ0FS --> F
+            elementNormalizado['num'] = element['pos'][4]  # AQ0FS --> S
+            elementNormalizado['pos'] = element['pos'][0:1]  # So a primeira letra (AQ0FS --> A)
+            listAdxsNormalizados.append(elementNormalizado)
 
-    listTotal = listSubs + listAdxs
+    listTotal = listSubsNormalizados + listAdxsNormalizados
     return listTotal
 
 
@@ -146,7 +152,7 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
             pos = ""
             if dict['ili'][-1].lower() == 'a':
                 pos = 'A'
-                print(pos + " " + dict['ili'])
+                #print(pos + " " + dict['ili'])
             elif dict['ili'][-1].lower() == 'n':
                 pos = 'NC'
             else:
@@ -170,7 +176,7 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
     # print("Lista de flexións para o " + lang + ":" )
     # print(listadoResultadosFlexions)
 
-    print("\n\nTermos do " + lang + " sin flexións:" )
+    print("Termos do " + lang + " sin flexións:" )
     print(termos_sen_flexions)
 
     gardaListadoNunFicheiro(termos_sen_flexions, rutaFicheiroTermosSenFlexions)
