@@ -44,7 +44,8 @@ def obtenInfoPaqueteDoXlsx(path_file):
 
         # print(sh.cell(i, 0).value)
         primeiraCelda = sh.cell(i, 0).value
-        if(primeiraCelda.startswith("##")):
+        primeiraCelda = str(primeiraCelda)
+        if(primeiraCelda.startswith("##") or primeiraCelda==""):
             continue
 
         # print(sh.cell(i, 5).value)
@@ -54,7 +55,7 @@ def obtenInfoPaqueteDoXlsx(path_file):
 
     return listDict
 
-def obtenTermosDoTXT(path_file):
+def obtenTermosDoTXT(path_file, lang):
     try:
         f = open(path_file, encoding='utf-8')
 
@@ -70,9 +71,13 @@ def obtenTermosDoTXT(path_file):
 
             else:
                 if(ili):
-                    listTermsGlg = []
-                    listTermsGlg.append(line.strip())
-                    listDict.append({"ili": ili, "lema_glg": listTermsGlg})
+                    listTerms = []
+                    listTerms.append(line.strip())
+
+                    if(lang=="pt"):
+                        listDict.append({"ili": ili, "lema_por": listTerms})
+                    else:
+                        listDict.append({"ili": ili, "lema_glg": listTerms})
                 ili = ""
 
         return listDict

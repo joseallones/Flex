@@ -1,5 +1,5 @@
-from methods_flex import obterFlexionsPaquete
-from methods_io import obtenInfoPaqueteDoCsv,obtenInfoPaqueteDoXlsx
+from methods_flex import *
+from methods_io import *
 from methods_trad import *
 import sys
 import os
@@ -17,7 +17,7 @@ def obtenListadoILIsDePaquete(infoPaquete):
 
 
 if(len(sys.argv)!=2):
-    print('Hai que pasar a ruta do ficheiro csv. Exemplo: flex_csv.py /home/data/paquete/es_discusión_estr1_animado_humano_origen.csv')
+    print('Hai que pasar a ruta do directorio. Exemplo: python3 trad.py /home/user/Flex/paquete')
     exit(1)
 
 ruta = sys.argv[1]
@@ -27,11 +27,17 @@ listadoRutas = []
 
 if(os.path.isdir(ruta)):
     print("Directorio")
-    if not ruta.endswith("/"):
-        ruta = ruta + "/"
+    # if not ruta.endswith("/"):
+    #     ruta = ruta + "/"
+
+
+    ruta_salida = os.path.join(ruta, 'output')
+    #ruta_salida = ruta + "output/"
     print(ruta)
-    ruta_salida = ruta + "output/"
     print(ruta_salida)
+    if not os.path.exists(ruta_salida):
+        os.makedirs(ruta_salida)
+
 
     for file in os.listdir(ruta):
         if file.startswith("es_") and  (file.endswith(".csv") or  file.endswith(".xlsx")):
@@ -43,10 +49,6 @@ elif(os.path.isfile(ruta)):
     print("File")
     listadoRutas.append(ruta)
     exit(1)
-
-
-if not os.path.exists('output'):
-    os.makedirs('output')
 
 print("\n\n")
 time.sleep(2)
@@ -61,28 +63,33 @@ for rutaFicheiroEntrada in listadoRutas:
     else:
         infoPaqueteDoCSV=obtenInfoPaqueteDoCsv(rutaFicheiroEntrada)
 
-
-    #infoPaqueteDoCSV=obtenInfoPaqueteDoCsv("data/paquete/es_discusión_estr1_animado_humano_origen.csv")
-    #infoPaqueteDoCSV=obtenInfoPaqueteDoCsv("data/paquete/es_estancia_estr1_animado_humano_profesión_educación.csv")
-
     print("\nLista de ILIs asociados ao paquete (csv):")
     listaILIsCSV=obtenListadoILIsDePaquete(infoPaqueteDoCSV)
 
 
-    #Uso a información que ven do CSV para os seguintes pasos!!!
+    #Empregase a información que ven do CSV para os seguintes pasos!!!
     infoPaquete = infoPaqueteDoCSV
     listaILIs = listaILIsCSV
 
     #Paso 2: Obter traduccions
 
-    #Paso 2.1: Obter termos asociados ao ILIs (synsets) en galego e portugués
+    #Paso 2.1: Obter termos asociados aos ILIs (synsets) en galego e portugués
     obtenTermos_AsociadosA_ILIs(infoPaquete)
 
     #Paso 2.2: Obter traduccións de API MyMemory + Apertium
-    obtenTraduccionsMyMemmory(infoPaquete, "pt")
-    obtenTraduccionsMyMemmory(infoPaquete, "gl")
-    obtenTraduccionsApertium(infoPaquete, "gl")
-    obtenTraduccionsApertium(infoPaquete, "pt")
+    detailsTradPt = obtenTraduccionsMyMemmory(infoPaquete, "pt")
+    rutaFicheiroDetallesMyMemmory_pt = rutaFicheiroEntrada.replace(".xlsx", "_detallesMyMemmory_pt.xlsx", 1)
+    rutaFicheiroDetallesMyMemmory_pt = rutaFicheiroDetallesMyMemmory_pt.replace(ruta, ruta_salida)
+    gardaDiccionarioNunFicheiro(detailsTradPt, rutaFicheiroDetallesMyMemmory_pt )
+
+
+    detailsTradGl = obtenTraduccionsMyMemmory(infoPaquete, "gl")
+    rutaFicheiroDetallesMyMemmory_gl = rutaFicheiroEntrada.replace(".xlsx", "_detallesMyMemmory_gl.xlsx", 1)
+    rutaFicheiroDetallesMyMemmory_gl = rutaFicheiroDetallesMyMemmory_gl.replace(ruta, ruta_salida)
+    gardaDiccionarioNunFicheiro(detailsTradGl, rutaFicheiroDetallesMyMemmory_gl )
+
+    #obtenTraduccionsApertium(infoPaquete, "gl")
+    #obtenTraduccionsApertium(infoPaquete, "pt")
 
     #Paso 2.3: Garda a información dos léxicos atopados nun fichero
     rutaFicheiroSaidaServizoWeb = rutaFicheiroEntrada.replace(".csv", "_resultados_servizoweb.csv", 1)
@@ -120,7 +127,7 @@ for rutaFicheiroEntrada in listadoRutas:
     rutaFicheiroSaidaPt = rutaFicheiroSaidaPt.replace(ruta, ruta_salida)
     rutaFicheiroSaidaGl = rutaFicheiroSaidaGl.replace(ruta, ruta_salida)
 
-    #Paso 4: Creación dos ficheiros CSVs con flexión, lema,indicadores de PoS e ILI
+    #Paso 4: Creación dos ficheiros CSVs con flexión, lema, indicadores de PoS e ILI
     gardaDiccionarioNunFicheiro(resultadosFlexionsPt, rutaFicheiroSaidaPt)
     gardaDiccionarioNunFicheiro(resultadosFlexionsGl, rutaFicheiroSaidaGl)
 

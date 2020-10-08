@@ -2,10 +2,6 @@ import requests
 import json
 from urllib.parse import quote
 
-
-from methods_io import gardaDiccionarioNunFicheiro
-
-
 def obtenTraduccionsApertium(infoPaquete, lang):
 
     lang_url = lang
@@ -38,15 +34,8 @@ def obtenTraduccionsApertium(infoPaquete, lang):
 
         listTrad = []
         responseData = json_data["responseData"]
-        #responseData = json_data["translatedText"]
         listTrad.append(responseData['translatedText'].lower())
 
-        # for match in matches:
-        #     if(match['segment'].lower()==dict['lema_spa']):
-        #         if(match['translation'].lower() not in listTrad):
-        #             listTrad.append(match['translation'].lower())
-        #             print(match['segment'])
-        #             print(match['translation'].lower() + "  " + str(match['quality']) + "  " + str(match['match']) )
 
         if lang == "pt":
             dict["trad_por_apertium"] = listTrad
@@ -56,6 +45,8 @@ def obtenTraduccionsApertium(infoPaquete, lang):
 def obtenTraduccionsMyMemmory(infoPaquete, lang):
 
     url = 'https://api.mymemory.translated.net/get?langpair=es|' + lang +'&de=joseallones87@gmail.com&q='
+
+    detailsTrad = []
 
     for dict in infoPaquete:
 
@@ -70,26 +61,65 @@ def obtenTraduccionsMyMemmory(infoPaquete, lang):
         if lang == "gl" and 'lema_glg' in dict.keys() and dict['lema_glg']:
             continue
 
-        print(url+quote(dict['lema_spa']))
-        r = requests.get(url+dict['lema_spa'])
+        term = dict['lema_spa'].replace("_", " ")
+
+        print(url+quote(term))
+        r = requests.get(url+quote(term))
         r.encoding = 'utf-8'
         json_data = json.loads(r.text)
 
         matches = json_data["matches"]
         listTrad = []
+
+        if not matches:
+            detail = {
+                "ili": dict['ili'],
+                "lema_spa": term,
+                "translation": "",
+                "quality": "",
+                "match": "",
+                "created-by": ""
+            }
+            detailsTrad.append(detail)
+
         for match in matches:
-            if(match['segment'].lower()==dict['lema_spa']):
-                if(match['translation'].lower() not in listTrad):
+
+                if(match['segment'].lower()!=term.lower()):  #si el segment no es exactamente el termino buscado se descarta
+                    continue
+                if (term[0].isupper() and match['translation'] in listTrad):  #si ya existe se descarta
+                    continue
+                if (match['translation'].lower() in listTrad):  #si ya existe se descarta
+                    continue
+
+                if (term[0].isupper()):
+                    listTrad.append(match['translation'])
+                else:
                     listTrad.append(match['translation'].lower())
-                    print(match['segment'])
-                    print(match['translation'].lower() + "  " + str(match['quality']) + "  " + str(match['match']) )
+
+
+                print(match['segment'])
+                print(match['translation'].lower() + "  " + str(match['quality']) + "  " + str(match['match']) )
+
+                detail = {
+                    "ili": dict['ili'],
+                    "lema_spa": term,
+                    "translation": match['translation'].lower(),
+                    "quality": str(match['quality']),
+                    "match": str(match['match']),
+                    "created-by": match['created-by']
+                }
+
+                detailsTrad.append(detail)
 
         if lang == "pt":
             dict["trad_por_mymemmory"] = listTrad
         elif lang == "gl":
             dict["trad_glg_mymemmory"] = listTrad
 
-        asss=0
+
+
+    print(detailsTrad)
+    return detailsTrad
 
 #Función para obter os termos asociados aos ILIs. Chama ao servizo de wordnet.pt
 def obtenTermos_AsociadosA_ILIs(infoPaquete):

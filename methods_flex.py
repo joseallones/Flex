@@ -142,7 +142,7 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
             elif (lang == "gl"):
                 lemas = dict["trad_glg_mymemmory"]
 
-        if (not lemas):
+        if (not lemas or dict['ili']==""):
             continue
 
         for lema in lemas:  # Para cada lema
