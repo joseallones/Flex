@@ -42,8 +42,16 @@ if(os.path.isdir(ruta)):
     for file in os.listdir(ruta):
         if file.startswith("es_") and  (file.endswith(".csv") or  file.endswith(".xlsx")):
             rutaFichero = os.path.join(ruta, file)
-            print(rutaFichero)
-            listadoRutas.append(rutaFichero)
+
+
+            file_exists = os.path.join(ruta, "output", file.replace("es","pt",1))
+
+            if os.path.exists(file_exists):
+                print("\texiste " + file_exists)
+            else:
+                print("\t\tno existe " + file_exists)
+                print(rutaFichero)
+                listadoRutas.append(rutaFichero)
 
 elif(os.path.isfile(ruta)):
     print("File")

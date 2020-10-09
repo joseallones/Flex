@@ -133,7 +133,19 @@ def obtenTermos_AsociadosA_ILIs(infoPaquete):
         listaUnIli = []
         listaUnIli.append(dict["ili"])
 
-        r = requests.post(url, json=listaUnIli)
+        r = ""
+        try:
+            r = requests.post(url, json=listaUnIli, timeout=100)
+        except:
+            try:
+                r = requests.post(url, json=listaUnIli, timeout=100)
+            except:
+                print("Error to recover info from Wordnet:" )
+                print(listaUnIli)
+
+        if not r:
+            continue
+
         r.encoding = 'utf-8'
         json_data = json.loads(r.text)
 
