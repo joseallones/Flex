@@ -4,6 +4,15 @@ git clone https://github.com/joseallones/Flex.git
 
 cd Flex
 
+**Dependencies:**
+
+It is required to install **xlrd** and **requests** python libraries:
+
+```
+pip3 install xlrd
+pip3 install requests
+```
+
 Repo contains several scripts:
 - **flex.py**  --> to flex one term
 - **flex_ficheiro_txt.py** --> to flex terms included in a txt file
