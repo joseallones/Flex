@@ -103,7 +103,7 @@ Positional arguments (required):
 
 Example:
 ```
-python3 flex_ficheiro_txt.py /home/data/txt
+python3 flex_ficheiro_txt.py paquete
 ```
 
 
