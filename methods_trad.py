@@ -44,7 +44,7 @@ def obtenTraduccionsApertium(infoPaquete, lang):
 
 def obtenTraduccionsMyMemmory(infoPaquete, lang):
 
-    url = 'https://api.mymemory.translated.net/get?langpair=es|' + lang +'&de=joseallones87@gmail.com&q='
+    url = 'https://api.mymemory.translated.net/get?langpair=es|' + lang +'&de=mail@gmail.com&q='
 
     detailsTrad = []
 
