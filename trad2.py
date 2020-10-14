@@ -1,6 +1,7 @@
 
 from methods_trad import *
 
+#Script para facer probas de traduccións con MyMemory
 listDict = []
 listDict.append({"ili": "0000A", "lema_spa": "Zurich"})
 listDict.append({"ili": "0000B", "lema_spa": "Ámsterdam"})

@@ -130,6 +130,8 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
 
     for dict in infoPaquete:
 
+        source = "wordnet"
+
         lemas = []
         if (lang == "pt"):
             lemas = dict["lema_por"]
@@ -137,6 +139,7 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
             lemas = dict["lema_glg"]
 
         if (not lemas):
+            source = "mymemmory"
             if (lang == "pt"):
                 lemas = dict["trad_por_mymemmory"]
             elif (lang == "gl"):
@@ -165,13 +168,17 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
             else:  #se pos (ili) non definido non se filtra por pos
                 resultadoAux = search(lemma=lema, lang=lang)
 
+            term = str(dict['lema_spa']).replace("_", " ")
+
             if resultadoAux:
                 for r in resultadoAux:
                     r['ili'] = dict['ili']
+                    r['source'] = source
+                    r['lema_spa'] = term
                 listadoResultadosFlexions = listadoResultadosFlexions + resultadoAux
             else:
                 termos_sen_flexions.append(lema)
-                listadoResultadosFlexions.append({"form": "", "lemma": lema, "pos": "N", "gen": "", "num": "", "ili": dict["ili"]})
+                listadoResultadosFlexions.append({"form": "", "lemma": lema, "pos": "N", "gen": "", "num": "", "ili": dict["ili"], "source": source, "lema_spa": term})
 
     # print("Lista de flexións para o " + lang + ":" )
     # print(listadoResultadosFlexions)
