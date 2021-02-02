@@ -105,7 +105,7 @@ for rutaFicheiroEntrada in listadoRutas:
         rutaFicheiroSaidaServizoWeb = rutaFicheiroSaidaServizoWeb.replace(".xlsx", "_resultados_servizoweb.xlsx", 1)
     rutaFicheiroSaidaServizoWeb = rutaFicheiroSaidaServizoWeb.replace(ruta, ruta_salida)
     print(rutaFicheiroSaidaServizoWeb)
-    gardaDiccionarioNunFicheiro(infoPaquete, rutaFicheiroSaidaServizoWeb)
+    gardaDiccionarioNunFicheiroDelimiterTab(infoPaquete, rutaFicheiroSaidaServizoWeb)
 
 
     #Paso 3: Obter flexións
