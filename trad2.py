@@ -13,5 +13,5 @@ listDict.append({"ili": "0000D", "lema_spa": "Antioquía"})
 
 #detailsTradPt = obtenTraduccionsMyMemmory(listDict, "pt")
 
-detailsTradPt = obtenTraduccionsMyMemmory(listDict, "gl")
+detailsTradPt = obtenTraduccionsMyMemmory(listDict, "de")
 print(listDict)

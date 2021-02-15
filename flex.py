@@ -12,7 +12,7 @@ def parseArguments():
 
     # Positional mandatory arguments
     parser.add_argument("lemma", help="Base form", type=str)
-    parser.add_argument("lang", help="Language: pt: Portuguese, gl: Galician ", type=str)
+    parser.add_argument("lang", help="Language: pt: Portuguese, gl: Galician, de: German, fr: French", type=str)
 
     # Optional arguments
     parser.add_argument("-n", "--num", help="Number: S:singular; P:plural; N:invariable", type=str, default="")

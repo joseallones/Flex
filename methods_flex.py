@@ -6,8 +6,12 @@ from methods_io import gardaListadoNunFicheiro
 
 dict_list_subs_gl = []
 dict_list_subs_pt = []
+dict_list_subs_ge = []
+dict_list_subs_fr = []
 dict_list_adxs_gl = []
 dict_list_adxs_pt = []
+dict_list_adxs_ge = []
+dict_list_adxs_fr = []
 
 # Función para leer un paquete csv e crear una lista de diccionarios
 def csv_dict_list(variables_file):
@@ -24,8 +28,13 @@ def recupera_diccionario(tipo):
 
     global dict_list_subs_gl
     global dict_list_subs_pt
+    global dict_list_subs_ge
+    global dict_list_subs_fr
     global dict_list_adxs_gl
     global dict_list_adxs_pt
+    global dict_list_adxs_ge
+    global dict_list_adxs_fr
+
 
     if(tipo == "nouns_gl"):
         if dict_list_subs_gl:
@@ -41,6 +50,20 @@ def recupera_diccionario(tipo):
             dict_list_subs_pt = csv_dict_list("data/nouns_pt.csv")
             return dict_list_subs_pt
 
+    elif (tipo == "nouns_ge"):
+        if dict_list_subs_ge:
+            return dict_list_subs_ge
+        else:
+            dict_list_subs_ge = csv_dict_list("data/nouns_ge.csv")
+            return dict_list_subs_ge
+
+    elif (tipo == "nouns_fr"):
+        if dict_list_subs_fr:
+            return dict_list_subs_fr
+        else:
+            dict_list_subs_fr = csv_dict_list("data/nouns_fr.csv")
+            return dict_list_subs_fr
+
     elif (tipo == "adxs_pt"):
         if dict_list_adxs_pt:
             return dict_list_adxs_pt
@@ -55,6 +78,20 @@ def recupera_diccionario(tipo):
             dict_list_adxs_gl = csv_dict_list("data/adxs_gl.csv")
             return dict_list_adxs_gl
 
+    elif (tipo == "adxs_ge"):
+        if dict_list_adxs_ge:
+            return dict_list_adxs_ge
+        else:
+            dict_list_adxs_ge = csv_dict_list("data/adxs_ge.csv")
+            return dict_list_adxs_ge
+
+    elif (tipo == "adxs_fr"):
+        if dict_list_adxs_fr:
+            return dict_list_adxs_fr
+        else:
+            dict_list_adxs_fr = csv_dict_list("data/adxs_fr.csv")
+            return dict_list_adxs_fr
+
     else:
         return []
 
@@ -65,10 +102,16 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
     dict_list_adx = []
 
     if lang:
-        if lang.upper() =="GL":
+        if lang.upper() =="GL" or lang.upper() == "GAL" or lang.upper() == "GLG":
             dict_list_subs = recupera_diccionario("nouns_gl")
             dict_list_adx = recupera_diccionario("adxs_gl")
-        else:
+        elif lang.upper() =="GE" or lang.upper() =="DE" or lang.upper() =="ALE":
+            dict_list_subs = recupera_diccionario("nouns_ge")
+            dict_list_adx = recupera_diccionario("adxs_ge")
+        elif lang.upper() =="FR":
+            dict_list_subs = recupera_diccionario("nouns_fr")
+            dict_list_adx = recupera_diccionario("adxs_fr")
+        elif lang.upper() == "PT" or lang.upper() == "POR":
             dict_list_subs = recupera_diccionario("nouns_pt")
             dict_list_adx = recupera_diccionario("adxs_pt")
 
@@ -87,15 +130,28 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
                 listSubs = [element for element in listSubs if element['pos'][0:2] == pos.upper()]
 
         if gen:
-            listSubs = [element for element in listSubs if element['pos'][2] == gen.upper()]
+            if (lang.upper() == "GE" or lang.upper() =="DE" or lang.upper() =="ALE"):
+                listSubs = [element for element in listSubs if element['pos'][3] == gen.upper()]
+            else:
+                listSubs = [element for element in listSubs if element['pos'][2] == gen.upper()]
 
         if num:
-            listSubs = [element for element in listSubs if element['pos'][3] == num.upper()]
+            if (lang.upper() == "GE" or lang.upper() =="DE" or lang.upper() =="ALE"):
+                listSubs = [element for element in listSubs if element['pos'][4] == num.upper()]
+            else:
+                listSubs = [element for element in listSubs if element['pos'][3] == num.upper()]
 
         for element in listSubs:
             elementNormalizado = element.copy()
-            elementNormalizado['gen'] = element['pos'][2]    #NCMP000 --> M
-            elementNormalizado['num'] = element['pos'][3]    #NCMP000 --> P
+            if (lang.upper() == "GE" or lang.upper() =="DE" or lang.upper() =="ALE"):
+                elementNormalizado['gen'] = element['pos'][3]  # NCDMP0  --> M
+                elementNormalizado['num'] = element['pos'][4]  # NCDMP0 --> P
+                elementNormalizado['type'] = element['pos'][1]
+                elementNormalizado['case'] = element['pos'][2]
+
+            else:
+                elementNormalizado['gen'] = element['pos'][2]    #NCMP000 --> M
+                elementNormalizado['num'] = element['pos'][3]    #NCMP000 --> P
             elementNormalizado['pos'] = element['pos'][0:1]  #So a primeira letra (NCMP000 --> N)
             listSubsNormalizados.append(elementNormalizado)
 
@@ -113,9 +169,15 @@ def search(lemma, lang = "pt",  pos = None, gen = None, num = None):
 
         for element in listAdxs:
             elementNormalizado = element.copy()
+            if (lang.upper() == "GE" or lang.upper() =="DE" or lang.upper() =="ALE"):
+                elementNormalizado['type'] = element['pos'][1]  # AQAFSC --> Q
+                elementNormalizado['case'] = element['pos'][2]  # AQAFSC --> A
             elementNormalizado['gen'] = element['pos'][3]  # AQ0FS --> F
             elementNormalizado['num'] = element['pos'][4]  # AQ0FS --> S
             elementNormalizado['pos'] = element['pos'][0:1]  # So a primeira letra (AQ0FS --> A)
+            if (lang.upper() == "GE" or lang.upper() =="DE" or lang.upper() =="ALE"):
+                elementNormalizado['degree'] = element['pos'][5]  # AQAFSC --> C
+
             listAdxsNormalizados.append(elementNormalizado)
 
     listTotal = listSubsNormalizados + listAdxsNormalizados
@@ -137,6 +199,11 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
             lemas = dict["lema_por"]
         elif (lang == "gl"):
             lemas = dict["lema_glg"]
+        elif (lang == "de"):
+            lemas = dict["lema_ale"]
+        elif (lang == "fr"):
+            lemas = dict["lema_fra"]
+
 
         if (not lemas):
             source = "mymemmory"
@@ -144,6 +211,10 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
                 lemas = dict["trad_por_mymemmory"]
             elif (lang == "gl"):
                 lemas = dict["trad_glg_mymemmory"]
+            elif lang == "fr":
+                lemas = dict["trad_fra_mymemmory"]
+            elif lang == "de":
+                lemas = dict["trad_ale_mymemmory"]
 
         if (not lemas or dict['ili']==""):
             continue
@@ -178,7 +249,22 @@ def obterFlexionsPaquete(infoPaquete, lang, rutaFicheiroTermosSenFlexions):
                 listadoResultadosFlexions = listadoResultadosFlexions + resultadoAux
             else:
                 termos_sen_flexions.append(lema)
-                listadoResultadosFlexions.append({"form": "", "lemma": lema, "pos": "N", "gen": "", "num": "", "ili": dict["ili"], "source": source, "lema_spa": term})
+
+                if (pos=="NC"):
+                    pos = "N"
+
+                if(lang == "de"):
+
+                    if(pos=="A"):
+                        listadoResultadosFlexions.append(
+                            {"form": "", "lemma": lema, "pos": pos, "gen": "", "num": "", "type": "", "case":"", "degree":"",
+                             "ili": dict["ili"], "source": source, "lema_spa": term})
+                    else:
+                        listadoResultadosFlexions.append(
+                            {"form": "", "lemma": lema, "pos": pos, "gen": "", "num": "", "type": "", "case": "",
+                             "ili": dict["ili"], "source": source, "lema_spa": term})
+                else:
+                    listadoResultadosFlexions.append({"form": "", "lemma": lema, "pos": pos, "gen": "", "num": "", "ili": dict["ili"], "source": source, "lema_spa": term})
 
     # print("Lista de flexións para o " + lang + ":" )
     # print(listadoResultadosFlexions)

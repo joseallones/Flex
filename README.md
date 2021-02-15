@@ -30,7 +30,7 @@ python3 flex.py [-h] [-n NUM] [-p POS] [-g GEN] lemma lang
 positional arguments:
 
 - lemma : Base form
-- lang  : pt (Portuguese), gl(Galician)
+- lang  : pt (Portuguese), gl(Galician), de (German), fr(French)
 
 optional arguments:
 
@@ -71,7 +71,7 @@ python3 flex_ficheiro_txt.py path_file lang
 Positional arguments (required):
 
 - path_file :   path of the txt file with the terms to be flexed
-- lang  : pt (Portuguese), gl(Galician)
+- lang  : pt (Portuguese), gl(Galician), de (German), fr(French)
 
 Example:
 
@@ -89,7 +89,7 @@ python3 flex_ficheiros_txt.py path_directory lang
 
 Positional arguments (required):
 - path_directory :   path of the directory with the files to be flexed
-- lang  : pt (Portuguese), gl(Galician)
+- lang  : pt (Portuguese), gl(Galician), de (German), fr(French)
 
 Example:
 ```
@@ -108,6 +108,7 @@ python3 trad.py path_directory
 ```
 
 Positional arguments (required):
+- lang  : pt (Portuguese), gl(Galician), de (German), fr (French)
 - path_directory :   path of the directory with the files to be translated
 
 Example:
