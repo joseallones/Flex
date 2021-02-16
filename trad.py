@@ -68,6 +68,19 @@ elif(os.path.isfile(ruta)):
 print("\n\n")
 time.sleep(2)
 
+
+
+def capitalizarSustantivos(resultadosFlexions):
+
+    for resultado in resultadosFlexions:
+
+        if( resultado["pos"] == "N" or resultado["pos"] == "NC"):
+            resultado["form"] = resultado["form"].capitalize()
+            resultado["lemma"] = resultado["lemma"].capitalize()
+
+    return resultadosFlexions
+
+
 for rutaFicheiroEntrada in listadoRutas:
 
     #Paso 1: Recupera ILIs de un paquete (de un fichero CSV)
@@ -124,6 +137,8 @@ for rutaFicheiroEntrada in listadoRutas:
 
     rutaFicheiroSaida = rutaFicheiroSaida.replace(ruta, ruta_salida)
 
+    if(idioma=="de"):
+        resultadosFlexions = capitalizarSustantivos(resultadosFlexions)
 
     #Paso 4: Creación dos ficheiros CSVs con flexión, lema, indicadores de PoS e ILI
     gardaDiccionarioNunFicheiro(resultadosFlexions, rutaFicheiroSaida)
